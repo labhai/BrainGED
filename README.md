@@ -1,15 +1,13 @@
 # BrainGED
 
-A compact implementation of the BrainGED similarity metric for signed,
-undirected functional-connectivity graphs.
-
-This release contains the metric implementation only. Dataset-specific
-preprocessing, experiment-specific parameter choices, evaluation pipelines,
-and statistical analyses are outside its scope.
+This repository provides a Python implementation of BrainGED for comparing
+precomputed, signed, undirected functional-connectivity graphs.
 
 ## Installation
 
 ```bash
+git clone https://github.com/labhai/BrainGED.git
+cd BrainGED
 python -m pip install -e .
 ```
 
@@ -41,36 +39,22 @@ task = np.array([
 ])
 
 result = brain_ged(rest, task, atlas, top_k=2)
-print(result.similarity, result.node_cost, result.edge_discrepancy)
+print(result.similarity)
+print(result.node_cost)
+print(result.edge_discrepancy)
 ```
 
-The inputs are precomputed, dense, signed, symmetric correlation matrices in
-the same atlas parcel order. BrainGED retains the global top-`k` upper-triangle
-edges ranked by absolute weight, preserves their signs, and uses their endpoints
-for the node edit term. Exact ties are resolved by atlas index. Node
-substitutions are restricted to the same hemisphere and coarsest hierarchy
-label. The edge term is evaluated separately in the unchanged full-atlas
-parcel order.
+Inputs are signed, symmetric correlation matrices with the same shape and
+atlas parcel order. Metadata must follow this order, with community labels
+listed from fine to coarse. `top_k` specifies the number of undirected edges
+retained per graph, ranked by absolute weight.
 
-The returned score is
-
-```text
-similarity = 1 - (node_cost + edge_discrepancy) / 2
-```
-
-Each metadata tuple lists community labels from fine to coarse; the example
-therefore instantiates `parcel identity -> Yeo-17 -> Yeo-7`. The implementation
-uses deletion and insertion costs of `1` and `1e-12` for both numerical
-constants.
-
-Run the tests with:
+## Tests
 
 ```bash
 python -m pytest -q
 ```
 
-Citation information will be added when the associated paper is public.
-
 ## License
 
-MIT
+This software is distributed under the [MIT License](LICENSE).
