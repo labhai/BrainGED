@@ -1,7 +1,6 @@
 # BrainGED
 
-This repository provides a Python implementation of BrainGED for comparing
-precomputed, signed, undirected functional-connectivity graphs.
+This repository provides a Python implementation of BrainGED.
 
 ## Installation
 
@@ -46,8 +45,7 @@ print(result.edge_discrepancy)
 
 Inputs are signed, symmetric correlation matrices with the same shape and
 atlas parcel order. Metadata must follow this order, with community labels
-listed from fine to coarse. `top_k` specifies the number of undirected edges
-retained per graph, ranked by absolute weight.
+listed from fine to coarse.
 
 ## Tests
 
