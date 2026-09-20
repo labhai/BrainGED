@@ -1,7 +1,11 @@
 # BrainGED
 
-Minimal reference implementation of BrainGED, a hierarchical community-aware
-similarity measure for sparsified functional brain networks.
+A compact implementation of the BrainGED similarity metric for signed,
+undirected functional-connectivity graphs.
+
+This release contains the metric implementation only. Dataset-specific
+preprocessing, experiment-specific parameter choices, evaluation pipelines,
+and statistical analyses are outside its scope.
 
 ## Installation
 
@@ -17,10 +21,10 @@ import numpy as np
 from brainged import AtlasMetadata, NodeMetadata, brain_ged
 
 atlas = AtlasMetadata([
-    NodeMetadata(1, "L", "Visual-A", "Visual"),
-    NodeMetadata(2, "L", "Visual-A", "Visual"),
-    NodeMetadata(3, "L", "Visual-B", "Visual"),
-    NodeMetadata(4, "R", "Visual-A", "Visual"),
+    NodeMetadata(1, "L", ("Visual-A", "Visual")),
+    NodeMetadata(2, "L", ("Visual-A", "Visual")),
+    NodeMetadata(3, "L", ("Visual-B", "Visual")),
+    NodeMetadata(4, "R", ("Visual-A", "Visual")),
 ])
 
 rest = np.array([
@@ -40,12 +44,13 @@ result = brain_ged(rest, task, atlas, top_k=2)
 print(result.similarity, result.node_cost, result.edge_discrepancy)
 ```
 
-The two inputs must be dense, signed, symmetric Pearson FC matrices in the same
-atlas parcel order. BrainGED retains the global top-`k` upper-triangle edges
-ranked by absolute weight, preserves their signs, and removes isolated nodes
+The inputs are precomputed, dense, signed, symmetric correlation matrices in
+the same atlas parcel order. BrainGED retains the global top-`k` upper-triangle
+edges ranked by absolute weight, preserves their signs, and uses their endpoints
 for the node edit term. Exact ties are resolved by atlas index. Node
-substitutions are restricted to the same hemisphere and Yeo-7 network. The
-edge term is evaluated separately in the unchanged full-atlas parcel order.
+substitutions are restricted to the same hemisphere and coarsest hierarchy
+label. The edge term is evaluated separately in the unchanged full-atlas
+parcel order.
 
 The returned score is
 
@@ -53,8 +58,10 @@ The returned score is
 similarity = 1 - (node_cost + edge_discrepancy) / 2
 ```
 
-The implementation uses deletion and insertion costs of `1`, the hierarchy
-`parcel identity -> Yeo-17 -> Yeo-7`, and `1e-12` for both numerical constants.
+Each metadata tuple lists community labels from fine to coarse; the example
+therefore instantiates `parcel identity -> Yeo-17 -> Yeo-7`. The implementation
+uses deletion and insertion costs of `1` and `1e-12` for both numerical
+constants.
 
 Run the tests with:
 
