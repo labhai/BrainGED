@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.venv/
+build/
+dist/
+
+# Keep manuscripts, datasets, and experiment artifacts out of this repository.
+*.pdf
+data/
+outputs/
+work/
+deploy/
