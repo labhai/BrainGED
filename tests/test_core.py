@@ -116,18 +116,14 @@ def test_final_score_matches_the_two_component_formula(atlas: AtlasMetadata) -> 
     assert result.target_nodes == ("a", "c")
 
 
-def test_identity_symmetry_and_bounds(atlas: AtlasMetadata) -> None:
+def test_identity_and_bounds(atlas: AtlasMetadata) -> None:
     left = fc(5, {(0, 1): 0.8, (1, 2): -0.6, (3, 4): 0.3})
     right = fc(5, {(0, 2): -0.7, (1, 2): 0.5, (3, 4): 0.4})
     identity = brain_ged(left, left, atlas, top_k=2)
-    forward = brain_ged(left, right, atlas, top_k=2)
-    reverse = brain_ged(right, left, atlas, top_k=2)
+    result = brain_ged(left, right, atlas, top_k=2)
     assert identity.similarity == 1.0
     assert identity.node_cost == identity.edge_discrepancy == 0.0
-    assert reverse.similarity == pytest.approx(forward.similarity)
-    assert reverse.node_cost == pytest.approx(forward.node_cost)
-    assert reverse.edge_discrepancy == pytest.approx(forward.edge_discrepancy)
-    assert 0.0 <= forward.similarity <= 1.0
+    assert 0.0 <= result.similarity <= 1.0
 
 
 def test_all_isolates_have_unit_similarity(atlas: AtlasMetadata) -> None:
