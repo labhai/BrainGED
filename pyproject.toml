@@ -5,12 +5,22 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "brainged"
 version = "0.1.0"
-description = "Implementation of the BrainGED similarity metric"
+description = "Hierarchy-aware graph similarity for signed functional-connectivity networks"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
   {name = "Boseong Kim"},
+]
+maintainers = [
+  {name = "Boseong Kim"},
+]
+keywords = [
+  "brain-connectivity",
+  "functional-connectivity",
+  "graph-edit-distance",
+  "graph-similarity",
+  "neuroimaging",
 ]
 dependencies = [
   "numpy>=1.24",
@@ -19,6 +29,7 @@ dependencies = [
 
 [project.urls]
 Repository = "https://github.com/labhai/BrainGED"
+Issues = "https://github.com/labhai/BrainGED/issues"
 
 [project.optional-dependencies]
 test = ["pytest>=7"]

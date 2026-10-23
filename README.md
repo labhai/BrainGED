@@ -1,12 +1,37 @@
+<div align="center">
+
 # BrainGED
 
-This repository provides a Python implementation of BrainGED.
+### A Hierarchical Community-Aware Similarity Measure for Functional Brain Networks
 
-## Installation
+**Boseong Kim<sup>1</sup> · Debashis Das Chakladar<sup>2</sup> · Haejun Chung<sup>1</sup> · Ikbeom Jang<sup>3</sup>**
+
+<sup>1</sup> Hanyang University, Seoul, Republic of Korea<br>
+<sup>2</sup> BITS Pilani, Hyderabad Campus, India<br>
+<sup>3</sup> Hankuk University of Foreign Studies, Yongin, Republic of Korea
+
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](#quick-start)
+[![License: MIT](https://img.shields.io/badge/License-MIT-14866D.svg)](LICENSE)
+
+[Overview](#overview) · [Quick start](#quick-start) · [Usage](#usage) · [Tests](#tests) · [License](#license)
+
+</div>
+
+## Overview
+
+BrainGED compares signed, undirected functional brain networks using global
+top-*k* sparsification, a hierarchy-aware node edit cost, and an edge
+discrepancy in a shared atlas order. It returns a similarity score in
+the interval [0, 1].
+
+## Quick start
 
 ```bash
 git clone https://github.com/labhai/BrainGED.git
 cd BrainGED
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
 python -m pip install -e .
 ```
 
@@ -39,20 +64,34 @@ task = np.array([
 
 result = brain_ged(rest, task, atlas, top_k=2)
 print(result.similarity)
-print(result.node_cost)
-print(result.edge_discrepancy)
 ```
 
-Inputs are signed, symmetric correlation matrices with the same shape and
-atlas parcel order. Metadata must follow this order, with community labels
-listed from fine to coarse.
+Inputs are dense, signed, symmetric Pearson-correlation matrices with the same
+shape and atlas parcel order. Diagonal entries are ignored. `roi_id` is the
+finest hierarchy level; `hierarchy` contains the remaining community labels
+from fine to coarse. `top_k` is the number of edges retained by absolute
+weight in each matrix.
+
+## Repository structure
+
+| Path | Contents |
+| --- | --- |
+| `src/brainged/` | BrainGED implementation |
+| `tests/` | Core method tests |
+| `pyproject.toml` | Package metadata and dependencies |
+| `LICENSE` | MIT License |
 
 ## Tests
 
 ```bash
+python -m pip install -e ".[test]"
 python -m pytest -q
 ```
 
 ## License
 
 This software is distributed under the [MIT License](LICENSE).
+
+## Contact
+
+Please use [GitHub Issues](https://github.com/labhai/BrainGED/issues).
