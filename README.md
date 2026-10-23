@@ -94,4 +94,4 @@ This software is distributed under the [MIT License](LICENSE).
 
 ## Contact
 
-Please use [GitHub Issues](https://github.com/labhai/BrainGED/issues).
+For code or research inquiries, contact [Boseong Kim](mailto:boseong@hanyang.ac.kr).
