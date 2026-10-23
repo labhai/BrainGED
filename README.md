@@ -17,6 +17,12 @@
 
 </div>
 
+<p align="center">
+  <img src="assets/brainged-overview.png" alt="BrainGED pipeline from functional-connectivity graph construction through hierarchy-aware node edit cost and edge discrepancy to similarity." width="960">
+</p>
+
+<p align="center"><em>BrainGED method overview. The package accepts precomputed, dense signed functional-connectivity matrices.</em></p>
+
 ## Overview
 
 BrainGED compares signed, undirected functional brain networks using global
@@ -76,6 +82,7 @@ weight in each matrix.
 
 | Path | Contents |
 | --- | --- |
+| `assets/` | BrainGED method overview |
 | `src/brainged/` | BrainGED implementation |
 | `tests/` | Core method tests |
 | `pyproject.toml` | Package metadata and dependencies |
