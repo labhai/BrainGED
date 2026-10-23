@@ -1,5 +1,3 @@
-"""BrainGED for signed, undirected functional-connectivity graphs."""
-
 from __future__ import annotations
 
 import math
@@ -41,8 +39,6 @@ def _hemisphere(value: str) -> str:
 
 @dataclass(frozen=True, slots=True)
 class NodeMetadata:
-    """Parcel identity, hemisphere, and fine-to-coarse hierarchy labels."""
-
     roi_id: Hashable
     hemisphere: str
     hierarchy: tuple[Hashable, ...]
@@ -75,8 +71,6 @@ class NodeMetadata:
 
     @property
     def levels(self) -> tuple[Hashable, ...]:
-        """All Eq. (1) labels, from parcel identity to coarsest community."""
-
         return (self.roi_id, *self.hierarchy)
 
     @property
@@ -86,8 +80,6 @@ class NodeMetadata:
 
 @dataclass(frozen=True, slots=True)
 class AtlasMetadata:
-    """Metadata in the same parcel order as the input FC matrices."""
-
     nodes: tuple[NodeMetadata, ...]
 
     def __init__(self, nodes: Iterable[NodeMetadata]):
@@ -122,16 +114,12 @@ class AtlasMetadata:
 
 @dataclass(frozen=True, slots=True)
 class SparsifiedFC:
-    """Full-atlas top-k matrix and its retained parcel indices."""
-
     matrix: NDArray[np.float64]
     nodes: tuple[int, ...]
 
 
 @dataclass(frozen=True, slots=True)
 class BrainGEDResult:
-    """BrainGED score and its two normalized components."""
-
     similarity: float
     node_cost: float
     edge_discrepancy: float
@@ -170,8 +158,6 @@ def _epsilon(value: float, name: str, *, positive: bool) -> float:
 
 
 def sparsify_top_k(fc: ArrayLike, top_k: int) -> SparsifiedFC:
-    """Retain the global absolute top-k unique edges and preserve their signs."""
-
     if isinstance(top_k, bool) or not isinstance(top_k, Integral):
         raise TypeError("top_k must be an integer")
     top_k = int(top_k)
@@ -200,8 +186,6 @@ def sparsify_top_k(fc: ArrayLike, top_k: int) -> SparsifiedFC:
 
 
 def hierarchy_distance(left: NodeMetadata, right: NodeMetadata) -> float:
-    """Return the Eq. (1) mismatch fraction across all hierarchy levels."""
-
     if not isinstance(left, NodeMetadata) or not isinstance(right, NodeMetadata):
         raise TypeError("left and right must be NodeMetadata instances")
     if len(left.levels) != len(right.levels):
@@ -241,8 +225,6 @@ def node_edit_cost(
     *,
     forbidden_epsilon: float = EPSILON,
 ) -> float:
-    """Compute normalized node edit cost with full dummy-node assignment."""
-
     if not isinstance(atlas, AtlasMetadata):
         raise TypeError("atlas must be an AtlasMetadata instance")
     forbidden_epsilon = _epsilon(
@@ -279,8 +261,6 @@ def edge_discrepancy(
     *,
     denominator_epsilon: float = EPSILON,
 ) -> float:
-    """Compute Eq. (5) once over the fixed-atlas upper triangle."""
-
     denominator_epsilon = _epsilon(
         denominator_epsilon, "denominator_epsilon", positive=False
     )
@@ -310,8 +290,6 @@ def brain_ged(
     forbidden_epsilon: float = EPSILON,
     denominator_epsilon: float = EPSILON,
 ) -> BrainGEDResult:
-    """Compute BrainGED similarity according to Eqs. (1)-(6)."""
-
     if not isinstance(atlas, AtlasMetadata):
         raise TypeError("atlas must be an AtlasMetadata instance")
     forbidden_epsilon = _epsilon(

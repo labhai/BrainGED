@@ -1,5 +1,3 @@
-"""Public API for BrainGED."""
-
 from .core import (
     AtlasMetadata,
     BrainGEDResult,
